@@ -208,6 +208,10 @@ function FeatureForm() {
       document.body.appendChild(link);
       link.click();
       link.remove();
+      setFeature("");
+      setFeatureTags("");
+      setFeatureComment("");
+      setScenarios([]);
     } catch (error) {
       console.error("Error generating feature file:", error);
     }
