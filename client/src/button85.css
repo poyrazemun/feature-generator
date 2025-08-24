@@ -1,0 +1,52 @@
+/* Ensure fixed positioning for floating buttons */
+.button-85.fixed {
+  position: fixed !important;
+}
+.button-85 {
+  padding: 0.6em 2em;
+  border: none;
+  outline: none;
+  color: rgb(255, 255, 255);
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  font-weight: bold;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.button-85:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #222222;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+/* Color variants */
+.button-85.red {
+  background: #b91c1c;
+}
+.button-85.red:after {
+  background: #7f1d1d;
+}
+.button-85.green {
+  background: #22c55e;
+}
+.button-85.green:after {
+  background: #166534;
+}
+.button-85.yellow {
+  background: #e5f31e;
+  color: #f8f8f8;
+}
+.button-85.yellow:after {
+  background: #eab308;
+}
