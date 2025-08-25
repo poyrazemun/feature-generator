@@ -734,113 +734,120 @@ function FeatureForm() {
               </div>
 
               <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Name
-                </label>
-                <div className="mb-2 relative">
-                  <input
-                    type="text"
-                    value={scenario.name}
-                    onChange={(e) =>
-                      handleScenarioChange(
-                        scenarioIndex,
-                        "name",
-                        e.target.value
-                      )
-                    }
-                    className="shadow appearance-none border rounded w-full py-2 px-3 pr-8 text-gray-700"
-                    required
-                  />
-                  {scenario.name.includes("{") &&
-                    scenario.name.includes("}") && (
-                      <span
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-orange-500 text-sm cursor-help"
-                        title="Please replace placeholders in {} with actual values"
-                      >
-                        ⚠️
-                      </span>
-                    )}
-                </div>
+                {/* Name alanı ve template dropdownu sadece Background dışı tiplerde gösterilsin */}
+                {scenario.type !== "Background" && (
+                  <>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Name
+                    </label>
+                    <div className="mb-2 relative">
+                      <input
+                        type="text"
+                        value={scenario.name}
+                        onChange={(e) =>
+                          handleScenarioChange(
+                            scenarioIndex,
+                            "name",
+                            e.target.value
+                          )
+                        }
+                        className="shadow appearance-none border rounded w-full py-2 px-3 pr-8 text-gray-700"
+                        required
+                      />
+                      {scenario.name.includes("{") &&
+                        scenario.name.includes("}") && (
+                          <span
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-orange-500 text-sm cursor-help"
+                            title="Please replace placeholders in {} with actual values"
+                          >
+                            ⚠️
+                          </span>
+                        )}
+                    </div>
 
-                {/* Scenario Name Templates Dropdown */}
-                <div className="mb-2">
-                  {(() => {
-                    let dropdownPlaceholder = "Choose a scenario template...";
-                    let helperText =
-                      "Template will replace the current scenario name";
-                    if (scenario.type === "Background") {
-                      dropdownPlaceholder = "Choose a background template...";
-                      helperText =
-                        "Template will replace the current background name";
-                    } else if (scenario.type === "Scenario Outline") {
-                      dropdownPlaceholder =
-                        "Choose a scenario outline template...";
-                      helperText =
-                        "Template will replace the current scenario outline name";
-                    }
-                    return (
-                      <>
-                        <select
-                          className="border border-blue-200 rounded-lg px-2 py-2 bg-gradient-to-r from-gray-50 via-white to-gray-50 shadow focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-full"
-                          onChange={(e) => {
-                            if (e.target.value) {
-                              const template = e.target.value;
-                              const appliedName =
-                                applyScenarioNameTemplate(template);
-                              handleScenarioChange(
-                                scenarioIndex,
-                                "name",
-                                appliedName
-                              );
-                              e.target.value = ""; // Reset dropdown
-                              // Focus the input after applying template
-                              setTimeout(() => {
-                                const input =
-                                  e.target.parentElement.parentElement.parentElement.querySelector(
-                                    "input"
+                    {/* Scenario Name Templates Dropdown */}
+                    <div className="mb-2">
+                      {(() => {
+                        let dropdownPlaceholder =
+                          "Choose a scenario template...";
+                        let helperText =
+                          "Template will replace the current scenario name";
+                        if (scenario.type === "Scenario Outline") {
+                          dropdownPlaceholder =
+                            "Choose a scenario outline template...";
+                          helperText =
+                            "Template will replace the current scenario outline name";
+                        }
+                        return (
+                          <>
+                            <select
+                              className="border border-blue-200 rounded-lg px-2 py-2 bg-gradient-to-r from-gray-50 via-white to-gray-50 shadow focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-full"
+                              onChange={(e) => {
+                                if (e.target.value) {
+                                  const template = e.target.value;
+                                  const appliedName =
+                                    applyScenarioNameTemplate(template);
+                                  handleScenarioChange(
+                                    scenarioIndex,
+                                    "name",
+                                    appliedName
                                   );
-                                if (input) input.focus();
-                              }, 100);
-                            }
-                          }}
-                        >
-                          <option value="">{dropdownPlaceholder}</option>
-                          <optgroup label="API Testing">
-                            {scenarioNameTemplates.api.map((template, idx) => (
-                              <option key={"api-" + idx} value={template}>
-                                {template}
-                              </option>
-                            ))}
-                          </optgroup>
-                          <optgroup label="Kafka">
-                            {scenarioNameTemplates.kafka.map(
-                              (template, idx) => (
-                                <option key={"kafka-" + idx} value={template}>
-                                  {template}
-                                </option>
-                              )
-                            )}
-                          </optgroup>
-                          <optgroup label="Functional">
-                            {scenarioNameTemplates.others.map(
-                              (template, idx) => (
-                                <option
-                                  key={"functional-" + idx}
-                                  value={template}
-                                >
-                                  {template}
-                                </option>
-                              )
-                            )}
-                          </optgroup>
-                        </select>
-                        <p className="text-xs text-gray-500 mt-1">
-                          {helperText}
-                        </p>
-                      </>
-                    );
-                  })()}
-                </div>
+                                  e.target.value = ""; // Reset dropdown
+                                  // Focus the input after applying template
+                                  setTimeout(() => {
+                                    const input =
+                                      e.target.parentElement.parentElement.parentElement.querySelector(
+                                        "input"
+                                      );
+                                    if (input) input.focus();
+                                  }, 100);
+                                }
+                              }}
+                            >
+                              <option value="">{dropdownPlaceholder}</option>
+                              <optgroup label="API Testing">
+                                {scenarioNameTemplates.api.map(
+                                  (template, idx) => (
+                                    <option key={"api-" + idx} value={template}>
+                                      {template}
+                                    </option>
+                                  )
+                                )}
+                              </optgroup>
+                              <optgroup label="Kafka">
+                                {scenarioNameTemplates.kafka.map(
+                                  (template, idx) => (
+                                    <option
+                                      key={"kafka-" + idx}
+                                      value={template}
+                                    >
+                                      {template}
+                                    </option>
+                                  )
+                                )}
+                              </optgroup>
+                              <optgroup label="Functional">
+                                {scenarioNameTemplates.others.map(
+                                  (template, idx) => (
+                                    <option
+                                      key={"functional-" + idx}
+                                      value={template}
+                                    >
+                                      {template}
+                                    </option>
+                                  )
+                                )}
+                              </optgroup>
+                            </select>
+                            <p className="text-xs text-gray-500 mt-1">
+                              {helperText}
+                            </p>
+                          </>
+                        );
+                      })()}
+                    </div>
+                  </>
+                )}
               </div>
 
               <div className="mb-4">
@@ -1185,7 +1192,8 @@ function FeatureForm() {
             Save as Draft
           </button>
           <button type="submit" className="button-85 green flex-1 order-2">
-            Download  </button>
+            Download{" "}
+          </button>
         </div>
         <div className="flex gap-4 mb-4">
           {/* Clear Form button moved to top right, removed from here */}
